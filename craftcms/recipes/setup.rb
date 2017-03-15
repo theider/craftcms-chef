@@ -8,7 +8,7 @@ end
 
 package "php" do
     action :install
-    version "5.6"
+    version "7.0"
 end
 
 Chef::Log.info("-- SETUP COMPLETE")

@@ -6,3 +6,6 @@ depends "build-essential"
 depends "mysql"
 depends "php"
 depends "php5-mysql"
+depends "apt"
+
+supports "ubuntu"

@@ -8,6 +8,7 @@ end
 
 package "php" do
     action :install
+    version 5.6
 end
 
 Chef::Log.info("-- SETUP COMPLETE")

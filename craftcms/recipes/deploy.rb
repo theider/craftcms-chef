@@ -1,1 +1,3 @@
-Chef::Log.info("********** Deploy Script Ran **********")
+Chef::Log.info("-- DEPLOY START")
+
+Chef::Log.info("-- DEPLOY COMPLETE")

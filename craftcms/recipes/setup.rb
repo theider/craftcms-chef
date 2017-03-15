@@ -6,7 +6,7 @@ apache_site "default" do
     enable true
 end
 
-package "php5" do
+package "php" do
     action :install
 end
 

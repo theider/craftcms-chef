@@ -1,0 +1,42 @@
+{
+  "name": "php5-mysql",
+  "description": "Installs/Configures the php5-mysql module for PHP",
+  "long_description": "",
+  "maintainer": "Yuriy Chernyshev",
+  "maintainer_email": "yuriy.chernyshev@gmail.com",
+  "license": "MIT license",
+  "platforms": {
+    "ubuntu": ">= 0.0.0",
+    "debian": ">= 0.0.0"
+  },
+  "dependencies": {
+    "php": ">= 0.0.0"
+  },
+  "recommendations": {
+
+  },
+  "suggestions": {
+
+  },
+  "conflicting": {
+
+  },
+  "providing": {
+
+  },
+  "replacing": {
+
+  },
+  "attributes": {
+
+  },
+  "groupings": {
+
+  },
+  "recipes": {
+    "php5-mysql": "Installs/Configures the php5-mysql module for PHP"
+  },
+  "version": "0.1.0",
+  "source_url": "",
+  "issues_url": ""
+}

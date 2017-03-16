@@ -1,6 +1,9 @@
 Chef::Log.info("-- DEPLOY START")
 
 app = search("aws_opsworks_app").first
+deploy_node = app["deploy"]
+
+Chef::Log.info("deploy node=#{deploy_node.inspect}")
 
 Chef::Log.info("App: '#{app['shortname']}''")
 Chef::Log.info("App URL: '#{app['app_source']['url']}'")

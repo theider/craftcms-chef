@@ -18,9 +18,8 @@ application '/srv/app' do
 end
 
 node[:deploy].each do |app_name, deploy|
-  ...
   template "#{deploy[:deploy_to]}/current/db-connect.php" do
-    source "db-connect.php.erb"
+    source "db.php.erb"
     mode 0660
     group deploy[:group]
 

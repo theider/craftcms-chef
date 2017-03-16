@@ -1,3 +1,4 @@
+Chef::Log.level = :debug
 Chef::Log.info("-- DEPLOY START")
 
 app = search("aws_opsworks_app").first

@@ -3,8 +3,8 @@ description "CraftCMS Web Server HTTP"
 
 depends "apache2"
 depends "apt"
-depends "application_git"
 depends "build-essential"
 depends "mysql"
+depends "application_git"
 
 supports "ubuntu"

@@ -6,9 +6,9 @@ app = search("aws_opsworks_app").first
 Chef::Log.info("App short name is '#{app['shortname']}''")
 Chef::Log.info("App URL is '#{app['app_source']['url']}'")
 
-application '/home/ubuntu' do
+application '/srv/app' do
     # check out code
-    git "/home/ubuntu" do
+    git "/srv/app" do
         repository app['app_source']['url']
         reference 'master'
         action :sync

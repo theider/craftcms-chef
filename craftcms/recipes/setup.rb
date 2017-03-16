@@ -14,11 +14,11 @@ end
 package ['php7.0', 'php-mbstring', 'php-mysql', 'php-curl', 'imagemagick php-imagick', 'php-mcrypt']
 
 # check out code
-# git "/home/ubuntu" do
-#     repository app['app_source']['url']
-#     reference 'master'
-#     action :sync
-#     deploy_key app["app_source"]["ssh_key"]
-# end
+git "/home/ubuntu" do
+    repository app['app_source']['url']
+    reference 'master'
+    action :sync
+    deploy_key app["app_source"]["ssh_key"]
+end
 
 Chef::Log.info("-- SETUP COMPLETE")

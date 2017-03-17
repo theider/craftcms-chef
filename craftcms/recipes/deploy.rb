@@ -1,9 +1,9 @@
 Chef::Log.info("-- DEPLOY START")
 
 app = search("aws_opsworks_app").first
-deploy_node = app["deploy"]
+rds_instance = search("aws_opsworks_rds_db_instance").first
 
-Chef::Log.info("deploy node=#{deploy_node.inspect}")
+Chef::Log.info("RDS info=#{rds_instance.inspect}")
 
 Chef::Log.info("App: '#{app['shortname']}''")
 Chef::Log.info("App URL: '#{app['app_source']['url']}'")
@@ -33,10 +33,10 @@ node[:deploy].each do |app_name, deploy|
     end
 
     variables(
-      :host =>     (deploy[:database][:host] rescue nil),
-      :user =>     (deploy[:database][:username] rescue nil),
-      :password => (deploy[:database][:password] rescue nil),
-      :db =>       (deploy[:database][:database] rescue nil)      
+      :host =>     (rds_instance[:address] rescue nil),
+      :user =>     (rds_instance[:db_user] rescue nil),
+      :password => (rds_instance[:db_password] rescue nil),
+      :db =>       ('timothyheider')      
     )
   end
 end

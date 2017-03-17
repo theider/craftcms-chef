@@ -20,25 +20,16 @@ application '/srv/app' do
     end
 end
 
-node[:deploy].each do |app_name, deploy|
-  template "#{deploy[:deploy_to]}/current/db-connect.php" do
-    source "db.php.erb"
-    mode 0660
-    group deploy[:group]
+template "db-tim.php" do
+  source "db.php.erb"
+  mode 0660
 
-    if platform?("ubuntu")
-      owner "www-data"
-    elsif platform?("amazon")   
-      owner "apache"
-    end
-
-    variables(
-      :host =>     (rds_instance[:address] rescue nil),
-      :user =>     (rds_instance[:db_user] rescue nil),
-      :password => (rds_instance[:db_password] rescue nil),
-      :db =>       ('timothyheider')      
-    )
-  end
+  variables(
+    :host =>     (rds_instance[:address] rescue nil),
+    :user =>     (rds_instance[:db_user] rescue nil),
+    :password => (rds_instance[:db_password] rescue nil),
+    :db =>       ('timothyheider')      
+  )
 end
 
 Chef::Log.info("-- DEPLOY COMPLETE")

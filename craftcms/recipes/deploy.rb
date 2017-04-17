@@ -17,19 +17,18 @@ application '/srv/app' do
         reference 'master'
         action :sync
         deploy_key app["app_source"]["ssh_key"]
-    end    
-   
-    link '/var/www/html' do
-      to '/srv/app/public'
-    end
+    end   
+end
 
-    directory '/srv/app' do
-      owner 'www-data'
-      group 'www-data'
-      mode '0755'
-      recursive true
-    end
+link '/var/www/html' do
+  to '/srv/app/public'
+end
 
+directory '/srv/app' do
+  owner 'www-data'
+  group 'www-data'
+  mode '0755'
+  recursive true
 end
 
 template "/srv/app/craft/config/db.php" do
@@ -42,6 +41,23 @@ template "/srv/app/craft/config/db.php" do
     :password => (rds_instance[:db_password] rescue nil),
     :db =>       ('timothyheider')      
   )
+end
+
+template "/srv/app/public/.htaccess" do
+  source "htaccess.erb"
+  mode 0660
+end
+
+execute "update owner permission" do
+    command "chown -R www-data /srv/app"
+    user "ubuntu"
+    action :nothing
+end
+
+execute "update group permission" do
+    command "chgrp -R www-data /srv/app"
+    user "ubuntu"
+    action :nothing
 end
 
 Chef::Log.info("-- DEPLOY COMPLETE")

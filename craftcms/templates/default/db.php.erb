@@ -11,22 +11,16 @@
 return array(
 
         // The database server name or IP address. Usually this is 'localhost' or '127.0.0.1'.
-        'server' => '<%= aws_opsworks_rds_db_instance %>',
-
-        timwashere
+        'server' => '<%= @host %>',
 
         // The name of the database to select.
-        'database' => 'THIS IS WHAT?',
+        'database' => '<%= @db %>',
 
         // The database username to connect with.
-<<<<<<< Updated upstream
-        'user' => '<%= :db_user %>',
-=======
-        'user' => '${whattheheck}',
->>>>>>> Stashed changes
+        'user' => '<%= @user %>',
 
         // The database password to connect with.
-        'password' => '<%= :db_password %>',
+        'password' => '<%= @password %>',
 
         // The prefix to use when naming tables. This can be no more than 5 characters.
         'tablePrefix' => 'craft',

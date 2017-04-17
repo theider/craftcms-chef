@@ -17,7 +17,19 @@ application '/srv/app' do
         reference 'master'
         action :sync
         deploy_key app["app_source"]["ssh_key"]
+    end    
+   
+    link '/var/www/html' do
+      to '/srv/app/public'
     end
+
+    directory '/srv/app' do
+      owner 'www-data'
+      group 'www-data'
+      mode '0755'
+      recursive true
+    end
+
 end
 
 template "/srv/app/craft/config/db.php" do

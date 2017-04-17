@@ -48,22 +48,19 @@ template "/srv/app/public/.htaccess" do
   mode 0660
 end
 
+execute "remove htaccess file" do
+    action :run
+    command "rm -f  /srv/app/public/htaccess"
+end
+
 execute "update owner permission" do
     action :run
     command "chown -R www-data /srv/app"
-    user "ubuntu"    
 end
 
 execute "update group permission" do
     action :run
     command "chgrp -R www-data /srv/app"
-    user "ubuntu"    
-end
-
-execute "remove htaccess file" do
-    action :run
-    command "rm -f  /srv/app/public/htaccess"
-    user "ubuntu"
 end
 
 Chef::Log.info("-- DEPLOY COMPLETE")

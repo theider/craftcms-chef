@@ -26,6 +26,7 @@ directory '/srv/app' do
   owner 'www-data'
   group 'www-data'
   mode '0755'
+  recursive true
 end
 
 Chef::Log.info("-- SETUP COMPLETE")

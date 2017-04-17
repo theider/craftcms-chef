@@ -2,7 +2,7 @@ Chef::Log.info("-- DEPLOY START")
 
 app = search("aws_opsworks_app").first
 rds_instance = search("aws_opsworks_rds_db_instance").first
-environment_vars = search("site_url").first
+
 Chef::Log.info("RDS info=#{rds_instance.inspect}")
 
 Chef::Log.info("App: '#{app['shortname']}''")
@@ -48,7 +48,7 @@ template "/srv/app/craft/config/general.php" do
   mode 0660
 
   variables(
-    :site_url =>     (environment_vars[:site_url] rescue nil),      
+    :site_url =>     (app['environment']['site_url'] rescue nil),      
   )
 end
 

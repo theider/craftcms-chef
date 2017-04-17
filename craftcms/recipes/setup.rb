@@ -11,7 +11,7 @@ apache_site "default" do
     enable true
 end
 
-package ['php7.0', 'php-mbstring', 'php-mysql', 'php-curl', 'imagemagick php-imagick', 'php-mcrypt', 'libphp7']
+package ['php7.0', 'php-mbstring', 'php-mysql', 'php-curl', 'imagemagick php-imagick', 'php-mcrypt', 'libapache2-mod-php']
 
 directory '/var/www/html' do
   action :delete

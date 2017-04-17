@@ -48,7 +48,7 @@ template "/srv/app/craft/config/general.php" do
   mode 0660
 
   variables(
-    :site_url =>     (app['environment']['site_url'] rescue nil),      
+    :site_url =>     (app['domains'][0] rescue nil),      
   )
 end
 

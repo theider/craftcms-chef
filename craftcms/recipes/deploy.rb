@@ -20,7 +20,7 @@ application '/srv/app' do
     end
 end
 
-template "db-tim.php" do
+template "/srv/app/craft/config/db.php" do
   source "db.php.erb"
   mode 0660
 

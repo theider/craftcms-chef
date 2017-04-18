@@ -1,6 +1,8 @@
 Chef::Log.info("-- DEPLOY START")
 
 app = search("aws_opsworks_app").first
+
+data_source = app['data_sources'][0]
 rds_instance = search("aws_opsworks_rds_db_instance").first
 
 Chef::Log.info("RDS info=#{rds_instance.inspect}")
@@ -36,10 +38,10 @@ template "/srv/app/craft/config/db.php" do
   mode 0660
 
   variables(
-    :host =>     (rds_instance[:address] rescue nil),
-    :user =>     (rds_instance[:db_user] rescue nil),
-    :password => (rds_instance[:db_password] rescue nil),
-    :db =>       ('timothyheider')      
+    :host =>     (rds_instance[:address]),
+    :user =>     (rds_instance[:db_user]),
+    :password => (rds_instance[:db_password]),
+    :database_name =>  (data_source[:database_name])      
   )
 end
 

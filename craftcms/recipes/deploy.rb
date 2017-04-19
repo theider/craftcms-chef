@@ -6,10 +6,8 @@ data_source = app['data_sources'][0]
 rds_instance = search("aws_opsworks_rds_db_instance").first
 
 Chef::Log.info("RDS info=#{rds_instance.inspect}")
-
 Chef::Log.info("App: '#{app['shortname']}''")
 Chef::Log.info("App URL: '#{app['app_source']['url']}'")
-
 Chef::Log.info("App node: '#{app.inspect}'")
 
 application '/srv/app' do
@@ -23,7 +21,7 @@ application '/srv/app' do
 end
 
 link '/var/www/html' do
-  to '/srv/app/public'
+  to '/srv/app/craftcms/public'
 end
 
 directory '/srv/app' do
@@ -33,7 +31,7 @@ directory '/srv/app' do
   recursive true
 end
 
-template "/srv/app/craft/config/db.php" do
+template "/srv/app/craftcms/craft/config/db.php" do
   source "db.php.erb"
   mode 0660
 
@@ -45,7 +43,7 @@ template "/srv/app/craft/config/db.php" do
   )
 end
 
-template "/srv/app/craft/config/general.php" do
+template "/srv/app/craftcms/craft/config/general.php" do
   source "general.php.erb"
   mode 0660
 
@@ -54,14 +52,14 @@ template "/srv/app/craft/config/general.php" do
   )
 end
 
-template "/srv/app/public/.htaccess" do
+template "/srv/app/craftcms/public/.htaccess" do
   source "htaccess.erb"
   mode 0660
 end
 
 execute "remove htaccess file" do
     action :run
-    command "rm -f  /srv/app/public/htaccess"
+    command "rm -f  /srv/app/craftcms/public/htaccess"
 end
 
 execute "update owner permission" do

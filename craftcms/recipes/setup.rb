@@ -27,4 +27,8 @@ directory '/var/www/html' do
   recursive true
 end
 
+service "apache2" do
+  action :restart
+end
+
 Chef::Log.info("-- SETUP COMPLETE")

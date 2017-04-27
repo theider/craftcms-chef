@@ -13,6 +13,10 @@ end
 
 package ['php7.0', 'php-mbstring', 'php-mysql', 'php-curl', 'imagemagick php-imagick', 'php-mcrypt', 'libapache2-mod-php']
 
+apache_module "rewrite" do
+  enable true
+end
+
 directory '/var/www/html' do
   action :delete
   recursive true

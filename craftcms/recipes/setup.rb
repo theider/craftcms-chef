@@ -11,7 +11,7 @@ apache_site "default" do
     enable true
 end
 
-package ['php7.0', 'php-mbstring', 'php-mysql', 'php-curl', 'imagemagick php-imagick', 'php-mcrypt', 'libapache2-mod-php']
+package ['php7.0', 'php-mbstring', 'php-mysql', 'php-curl', 'php-xml', 'php-simplexml', 'imagemagick php-imagick', 'php-mcrypt', 'libapache2-mod-php']
 
 template "/etc/apache2/apache2.conf" do
   source "apache2.conf.erb"

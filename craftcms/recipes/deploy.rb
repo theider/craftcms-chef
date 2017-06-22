@@ -5,6 +5,8 @@ def deploy_website(app)
     site_user = app['environment']['SITE_USER']    
     Chef::Log.info("--- create site user " + site_user)
 
+    Chef::Log.info('domains: ' + app['domains'].inspect)
+
     home_path = '/home/' + site_user
 
     user 'create_user' do
@@ -48,10 +50,14 @@ if op_command['type'] == 'deploy'
     search("aws_opsworks_app").each do |app|
       Chef::Log.info(" -- app:" + app.inspect)
     end
-    # list domains
-    search('domains').each do |domain|
-      Chef::Log.info(" -- domain:" + domain)
-    end          
+    # deploy the app to the instance
+    search('aws_opsworks_app').each do |app|
+      op_command['args']['app_ids'].each do |app_id|
+          if app_id == app['app_id']
+              deploy_website(app)
+          end
+      end
+    end
 end     
 
 # app = search("aws_opsworks_app").first

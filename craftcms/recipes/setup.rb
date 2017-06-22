@@ -4,11 +4,7 @@ include_recipe "apache2"
 include_recipe "apt"
 
 apt_update 'update' do
-  action :update1
-end
-
-apache_site "default" do
-    enable true
+  action :update
 end
 
 package ['php7.0', 'php-mbstring', 'php-mysql', 'php-curl', 'php-xml', 'php-simplexml', 'imagemagick php-imagick', 'php-mcrypt', 'libapache2-mod-php']

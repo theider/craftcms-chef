@@ -74,7 +74,7 @@ def deploy_website(app)
     end
 
     Chef::Log.info("--- make craft folder writable")
-    directory home_path + 'www/craftcms/craft' do
+    directory home_path + '/www/craftcms/craft' do
       mode '0775'
       recursive true
     end  

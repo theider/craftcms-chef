@@ -22,6 +22,14 @@ apache_module "rewrite" do
   enable true
 end
 
+apache_module "mpm_event" do 
+  enable false
+end
+
+apache_module "mpm_prefork" do 
+  enable true
+end
+
 directory '/var/www/html' do
   action :delete
   recursive true

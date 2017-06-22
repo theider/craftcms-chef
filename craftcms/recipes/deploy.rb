@@ -5,7 +5,7 @@ def deploy_website(app)
     site_user = app['environment']['SITE_USER']    
     Chef::Log.info("--- create site user " + site_user)
 
-    Chef::Log.info('domains: ' + app['domains'].inspect)
+    Chef::Log.info('domain: ' + app['domains'][0]
 
     home_path = '/home/' + site_user
 
@@ -20,17 +20,20 @@ def deploy_website(app)
     
     site_source_url = app['app_source']['url']
     Chef::Log.info("--- check out site code " + site_source_url)
-    application home_path do
+
+    application home_path + '/www' do
         # check out code
         owner site_user
         group 'www-data'       
-        git home_path do
+        git home_path + '/www' do
             repository site_source_url
             reference 'master'
             action :sync
             deploy_key app['app_source']['ssh_key']
         end   
     end
+
+    Chef::Log.info("--- completed site code checkout")
     
 end
 
@@ -59,6 +62,8 @@ if op_command['type'] == 'deploy'
       end
     end
 end     
+
+Chef::Log.info("-- DEPLOY COMPLETE")
 
 # app = search("aws_opsworks_app").first
 
@@ -131,5 +136,3 @@ end
 #     action :run
 #     command "chgrp -R www-data /srv/app"
 # end
-
-Chef::Log.info("-- DEPLOY COMPLETE")

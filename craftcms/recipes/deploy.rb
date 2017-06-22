@@ -31,7 +31,8 @@ def deploy_website(app)
     application home_path + '/www' do
         # check out code
         owner site_user
-        group 'www-data'       
+        group 'www-data' 
+        mode '770'      
         git home_path + '/www' do
             repository site_source_url
             reference 'master'
@@ -74,7 +75,9 @@ def deploy_website(app)
     end
 
     Chef::Log.info("--- make craft folder writable")
-    directory home_path + '/www/craftcms/craft' do
+    directory home_path + '/www/craftcms/craft/storage' do
+      owner site_user
+      group 'www-data'
       mode '0775'
       recursive true
     end  
@@ -90,6 +93,19 @@ def deploy_website(app)
         :database_name =>  (data_source[:database_name])      
       )
     end    
+
+    apache_module "mpm_event" do 
+      enable false
+    end
+
+    apache_module "mpm_prefork" do 
+      enable true
+    end
+    
+    service "apache2" do
+      action :restart
+    end
+
     # enable the site
     Chef::Log.info("--- enable site")
     apache_site site_domain do

@@ -1,5 +1,41 @@
 Chef::Log.info("-- DEPLOY START")
 
+def deploy_website(app, site_user)
+    Chef::Log.info("-- deploy web site app_id: " + app['app_id'])
+    Chef::Log.info("-- site user " + site_user)
+    user 'create_user' do
+        comment site_user
+        username site_user
+        group 'www-data'
+        manage_home true
+        home '/home/' + site_user
+        shell '/bin/bash'
+    end
+end
+
+search("aws_opsworks_command").each do |command|
+  Chef::Log.info("*** command: " + command.inspect)
+end
+
+op_command = search("aws_opsworks_command").first
+if op_command['type'] == 'deploy'
+    site_user = app['environment']['SITE_USER']
+    # list the hosts
+    Chef::Log.info("HOSTS:")
+    search("aws_opsworks_instance").each do |instance|
+        Chef::Log.info(" -- instance:" + instance.inspect)
+    end
+    # list the apps
+    Chef::Log.info("APPS:")
+    search("aws_opsworks_app").each do |app|
+        op_command['args']['app_ids'].each do |app_id|
+            if app_id == app['app_id']
+                deploy_website(app, site_user)
+            end
+        end
+    end
+end     
+
 app = search("aws_opsworks_app").first
 
 data_source = app['data_sources'][0]
@@ -9,6 +45,15 @@ Chef::Log.info("RDS info=#{rds_instance.inspect}")
 Chef::Log.info("App: '#{app['shortname']}''")
 Chef::Log.info("App URL: '#{app['app_source']['url']}'")
 Chef::Log.info("App node: '#{app.inspect}'")
+
+user 'create_user' do
+    comment 'realise'
+    username app_domain_name
+    group app_domain_name
+    manage_home true
+    home '/home/' + app_domain_name
+    shell '/bin/bash'
+end
 
 application '/srv/app' do
     # check out code

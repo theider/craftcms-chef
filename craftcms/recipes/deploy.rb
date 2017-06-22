@@ -46,16 +46,12 @@ if op_command['type'] == 'deploy'
     # list the apps
     Chef::Log.info("APPS:")
     search("aws_opsworks_app").each do |app|
-      Chef::Log.info(" -- app:" + instance.inspect)
+      Chef::Log.info(" -- app:" + app.inspect)
     end
-
-    search("aws_opsworks_app").each do |app|
-        op_command['args']['app_ids'].each do |app_id|
-            if app_id == app['app_id']
-                deploy_website(app)
-            end
-        end
-    end
+    # list domains
+    search('domains').each do |domain|
+      Chef::Log.info(" -- domain:" + domain)
+    end          
 end     
 
 # app = search("aws_opsworks_app").first

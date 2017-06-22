@@ -30,21 +30,27 @@ def deploy_website(app)
 
     application home_path + '/www' do
         # check out code
-        owner site_user
-        group site_user 
+        owner 'ubuntu'
+        group 'ubuntu'
         git home_path + '/www' do
             repository site_source_url
             reference 'master'
             action :sync
             deploy_key app['app_source']['ssh_key']
         end   
+    end
+
+    application home_path + '/www' do
+        # check out code
+        owner 'ubuntu'
+        group 'ubuntu'
         directory home_path + '/www' do
           owner site_user
           group 'www-data'
           mode '0775'
           recursive true
           action :create
-        end        
+        end               
     end
 
     Chef::Log.info("--- create virtual site template")

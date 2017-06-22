@@ -3,7 +3,7 @@ Chef::Log.info("-- DEPLOY START")
 def deploy_website(app)    
     Chef::Log.info("--- deploy web site app_id: " + app['app_id'])
     site_user = app['environment']['SITE_USER']    
-    Chef::Log.info("--- site user " + site_user)
+    Chef::Log.info("--- create site user " + site_user)
 
     home_path = '/home/' + site_user
 
@@ -16,15 +16,17 @@ def deploy_website(app)
         shell '/bin/bash'
     end
     
+    site_source_url = app['app_source']['url']
+    Chef::Log.info("--- check out site code " + site_source_url)
     application home_path do
         # check out code
         owner site_user
         group 'www-data'       
         git home_path do
-            repository app['app_source']['url']
+            repository site_source_url
             reference 'master'
             action :sync
-            deploy_key app["app_source"]["ssh_key"]
+            deploy_key app['app_source']['ssh_key']
         end   
     end
     

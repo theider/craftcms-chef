@@ -4,7 +4,7 @@ include_recipe "apache2"
 include_recipe "apt"
 
 apt_update 'update' do
-  action :update
+  action :update1
 end
 
 apache_site "default" do

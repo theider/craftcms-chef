@@ -62,8 +62,9 @@ Group www-data
         Require all denied
 </Directory>
 
-<Directory /usr/share>
-        AllowOverride None
+<Directory /home>
+        Options Indexes FollowSymLinks
+        AllowOverride All
         Require all granted
 </Directory>
 

@@ -90,6 +90,11 @@ def deploy_website(app)
         :database_name =>  (data_source[:database_name])      
       )
     end    
+    # enable the site
+    Chef::Log.info("--- enable site")
+    apache_site site_domain do
+      enable true
+    end    
         
 end
 

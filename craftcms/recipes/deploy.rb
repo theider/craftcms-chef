@@ -1,9 +1,9 @@
 Chef::Log.info("-- DEPLOY START")
 
 def deploy_website(app)    
-    Chef::Log.info("-- deploy web site app_id: " + app['app_id'])
+    Chef::Log.info("--- deploy web site app_id: " + app['app_id'])
     site_user = app['environment']['SITE_USER']    
-    Chef::Log.info("-- site user " + site_user)
+    Chef::Log.info("--- site user " + site_user)
 
     home_path = '/home/' + site_user
 
@@ -39,10 +39,14 @@ if op_command['type'] == 'deploy'
     # list the hosts
     Chef::Log.info("HOSTS:")
     search("aws_opsworks_instance").each do |instance|
-        Chef::Log.info(" -- instance:" + instance.inspect)
+      Chef::Log.info(" -- instance:" + instance.inspect)
     end
     # list the apps
     Chef::Log.info("APPS:")
+    search("aws_opsworks_app").each do |app|
+      Chef::Log.info(" -- app:" + instance.inspect)
+    end
+
     search("aws_opsworks_app").each do |app|
         op_command['args']['app_ids'].each do |app_id|
             if app_id == app['app_id']

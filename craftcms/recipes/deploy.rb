@@ -5,6 +5,11 @@ def deploy_website(app)
     site_user = app['environment']['SITE_USER']    
     Chef::Log.info("--- create site user " + site_user)
 
+    data_source = app['data_sources'][0]
+    rds_instance = search("aws_opsworks_rds_db_instance").first
+
+    Chef::Log.info("RDS info=#{rds_instance.inspect}")
+
     site_domain = app['domains'][0]
 
     Chef::Log.info('domain: ' + site_domain)
@@ -50,7 +55,7 @@ def deploy_website(app)
     directory home_path + '/www/logs' do
       owner site_user
       group 'www-data'
-      mode '0755'
+      mode '0775'
       recursive true
     end
 
@@ -67,6 +72,24 @@ def deploy_website(app)
       action :run
       command "rm -f " + home_path + "/www/craftcms/public/htaccess"
     end
+
+    Chef::Log.info("--- make craft folder writable")
+    directory home_path + 'www/craftcms/craft' do
+      mode '0775'
+      recursive true
+    end  
+
+    template home_path + "/www/craftcms/craft/config/db.php" do
+      source "db.php.erb"
+      mode 0660
+
+      variables(
+        :host =>     (rds_instance[:address]),
+        :user =>     (rds_instance[:db_user]),
+        :password => (rds_instance[:db_password]),
+        :database_name =>  (data_source[:database_name])      
+      )
+    end    
         
 end
 
@@ -100,11 +123,7 @@ Chef::Log.info("-- DEPLOY COMPLETE")
 
 # app = search("aws_opsworks_app").first
 
-# data_source = app['data_sources'][0]
-# rds_instance = search("aws_opsworks_rds_db_instance").first
-
-# Chef::Log.info("RDS info=#{rds_instance.inspect}")
-# Chef::Log.info("App: '#{app['shortname']}''")
+#Chef::Log.info("App: '#{app['shortname']}''")
 # Chef::Log.info("App URL: '#{app['app_source']['url']}'")
 # Chef::Log.info("App node: '#{app.inspect}'")
 
@@ -129,17 +148,7 @@ Chef::Log.info("-- DEPLOY COMPLETE")
 #   recursive true
 # end
 
-# template "/srv/app/craftcms/craft/config/db.php" do
-#   source "db.php.erb"
-#   mode 0660
 
-#   variables(
-#     :host =>     (rds_instance[:address]),
-#     :user =>     (rds_instance[:db_user]),
-#     :password => (rds_instance[:db_password]),
-#     :database_name =>  (data_source[:database_name])      
-#   )
-# end
 
 
 

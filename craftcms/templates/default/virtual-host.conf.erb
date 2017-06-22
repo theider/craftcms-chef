@@ -1,11 +1,17 @@
 <VirtualHost *:80>
-  ServerName <%= @site_domain %>
-  ServerAdmin tim@preludevoice.com
+    ServerName <%= @site_domain %>
+    ServerAdmin tim@preludevoice.com
 
-  DirectoryIndex index.php
-  DocumentRoot <%= @home_path %>/www/craftcms/public
+    DirectoryIndex index.php
+    DocumentRoot <%= @home_path %>/www/craftcms/public
 
-  LogLevel warn
-  ErrorLog <%= @home_path %>/www/logs/error.log
-  CustomLog <%= @home_path %>/www/logs/access.log combined
+    LogLevel warn
+    ErrorLog <%= @home_path %>/www/logs/error.log
+    CustomLog <%= @home_path %>/www/logs/access.log combined
+
+    <Directory <%= @home_path %>/www/craftcms/public>
+        Options Indexes FollowSymLinks
+        AllowOverride None
+        Require all granted
+    </Directory>  
 </VirtualHost>

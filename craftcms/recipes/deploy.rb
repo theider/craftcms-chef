@@ -5,7 +5,9 @@ def deploy_website(app)
     site_user = app['environment']['SITE_USER']    
     Chef::Log.info("--- create site user " + site_user)
 
-    Chef::Log.info('domain: ' + app['domains'][0]
+    site_domain = app['domains'][0]
+
+    Chef::Log.info('domain: ' + site_domain)
 
     home_path = '/home/' + site_user
 

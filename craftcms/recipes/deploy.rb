@@ -1,16 +1,33 @@
 Chef::Log.info("-- DEPLOY START")
 
-def deploy_website(app, site_user)
+def deploy_website(app)    
     Chef::Log.info("-- deploy web site app_id: " + app['app_id'])
+    site_user = app['environment']['SITE_USER']    
     Chef::Log.info("-- site user " + site_user)
+
+    home_path = '/home/' + site_user
+
     user 'create_user' do
         comment site_user
         username site_user
         group 'www-data'
         manage_home true
-        home '/home/' + site_user
+        home home_path
         shell '/bin/bash'
     end
+    
+    application home_path do
+        # check out code
+        owner site_user
+        group 'www-data'       
+        git home_path do
+            repository app['app_source']['url']
+            reference 'master'
+            action :sync
+            deploy_key app["app_source"]["ssh_key"]
+        end   
+    end
+    
 end
 
 search("aws_opsworks_command").each do |command|
@@ -19,7 +36,6 @@ end
 
 op_command = search("aws_opsworks_command").first
 if op_command['type'] == 'deploy'
-    site_user = app['environment']['SITE_USER']
     # list the hosts
     Chef::Log.info("HOSTS:")
     search("aws_opsworks_instance").each do |instance|
@@ -30,7 +46,7 @@ if op_command['type'] == 'deploy'
     search("aws_opsworks_app").each do |app|
         op_command['args']['app_ids'].each do |app_id|
             if app_id == app['app_id']
-                deploy_website(app, site_user)
+                deploy_website(app)
             end
         end
     end
@@ -55,15 +71,6 @@ end
 #     shell '/bin/bash'
 # end
 
-# application '/srv/app' do
-#     # check out code
-#     git "/srv/app" do
-#         repository app['app_source']['url']
-#         reference 'master'
-#         action :sync
-#         deploy_key app["app_source"]["ssh_key"]
-#     end   
-# end
 
 # link '/var/www/html' do
 #   to '/srv/app/craftcms/public'

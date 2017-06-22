@@ -74,14 +74,6 @@ def deploy_website(app)
       command "rm -f " + home_path + "/www/craftcms/public/htaccess"
     end
 
-    Chef::Log.info("--- make craft folder writable")
-    directory home_path + '/www/craftcms/craft/storage' do
-      owner site_user
-      group 'www-data'
-      mode '0775'
-      recursive true
-    end  
-
     template home_path + "/www/craftcms/craft/config/db.php" do
       source "db.php.erb"
       mode 0660

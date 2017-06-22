@@ -35,8 +35,39 @@ def deploy_website(app)
         end   
     end
 
-    Chef::Log.info("--- completed site code checkout")
-    
+    Chef::Log.info("--- create virtual site template")
+
+    template "/etc/apache2/sites-available/" + site_domain + '.conf' do
+      source "virtual-host.conf.erb"
+      mode '0755'
+      variables(
+        :site_domain => site_domain,
+        :home_path => home_path
+      )
+    end
+
+    Chef::Log.info("--- create log folder")
+    directory home_path + '/www/logs' do
+      owner site_user
+      group 'www-data'
+      mode '0755'
+      recursive true
+    end
+
+    Chef::Log.info("--- create .htaccess")
+    template home_path + "/www/craftcms/public/.htaccess" do
+      owner site_user
+      group 'www-data'
+      source "htaccess.erb"
+      mode '0755'
+    end
+
+    Chef::Log.info("--- remove htaccess")
+    execute "remove htaccess file" do
+      action :run
+      command "rm -f " + home_path + "/www/craftcms/public/htaccess"
+    end
+        
 end
 
 search("aws_opsworks_command").each do |command|
@@ -110,24 +141,7 @@ Chef::Log.info("-- DEPLOY COMPLETE")
 #   )
 # end
 
-# template "/srv/app/craftcms/craft/config/general.php" do
-#   source "general.php.erb"
-#   mode 0660
 
-#   variables(
-#     :site_url =>     (app['domains'][0] rescue nil),      
-#   )
-# end
-
-# template "/srv/app/craftcms/public/.htaccess" do
-#   source "htaccess.erb"
-#   mode 0660
-# end
-
-# execute "remove htaccess file" do
-#     action :run
-#     command "rm -f  /srv/app/craftcms/public/htaccess"
-# end
 
 # execute "update owner permission" do
 #     action :run

@@ -118,6 +118,10 @@ def deploy_website(app)
       enable true
     end
     
+    apache_module "ssl" do 
+      enable true
+    end
+
     service "apache2" do
       action :restart
     end

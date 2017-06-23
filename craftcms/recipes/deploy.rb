@@ -52,13 +52,28 @@ def deploy_website(app)
 
     Chef::Log.info("--- create virtual site template")
 
-    template "/etc/apache2/sites-available/" + site_domain + '.conf' do
-      source "virtual-host.conf.erb"
-      mode '0755'
-      variables(
-        :site_domain => site_domain,
-        :home_path => home_path
-      )
+    use_ssl = app['environment']['USE_SSL']
+
+    if (use_ssl != nil) && (use_ssl == 'true')
+      Chef::Log.info("--- deploying with SSL")
+      template "/etc/apache2/sites-available/" + site_domain + '.conf' do
+        source "virtual-host-ssl.conf.erb"
+        mode '0755'
+        variables(
+          :site_domain => site_domain,
+          :home_path => home_path
+        )
+      end
+    else      
+      Chef::Log.info("--- deploying without SSL")
+      template "/etc/apache2/sites-available/" + site_domain + '.conf' do
+        source "virtual-host.conf.erb"
+        mode '0755'
+        variables(
+          :site_domain => site_domain,
+          :home_path => home_path
+        )
+      end
     end
 
     Chef::Log.info("--- create log folder")

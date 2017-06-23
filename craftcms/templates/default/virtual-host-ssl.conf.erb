@@ -1,0 +1,37 @@
+<VirtualHost *:80>
+    ServerName <%= @site_domain %>
+    ServerAdmin tim@preludevoice.com
+
+    DirectoryIndex index.php
+    DocumentRoot <%= @home_path %>/www/craftcms/public
+
+    LogLevel warn
+    ErrorLog <%= @home_path %>/www/logs/error.log
+    CustomLog <%= @home_path %>/www/logs/access.log combined
+
+    <Directory <%= @home_path %>/www/craftcms/public>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>  
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName <%= @site_domain %>
+    DirectoryIndex index.php
+    DocumentRoot <%= @home_path %>/www/craftcms/public
+    SSLEngine on
+    SSLCertificateFile <%= @home_path %>/www/craftcms/ssl/certificate.crt
+    SSLCertificateKeyFile <%= @home_path %>/www/craftcms/ssl/certificate.key
+    SSLCertificateChainFile <%= @home_path %>/www/craftcms/ssl/intermediate.crt
+    LogLevel warn
+    ErrorLog <%= @home_path %>/www/logs/error.log
+    CustomLog <%= @home_path %>/www/logs/access.log combined
+
+    <Directory <%= @home_path %>/www/craftcms/public>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>  
+
+</VirtualHost>

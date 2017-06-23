@@ -42,12 +42,12 @@ def deploy_website(app)
 
     execute "update group permission" do
         action :run
-        command 'chgrp -R www-data ' + home_path +'/craftcms'
+        command 'chgrp -R www-data ' + home_path +'/www/craftcms'
     end
 
     execute "update group write" do
         action :run
-        command 'chmod -R g+w ' + home_path +'/craftcms'
+        command 'chmod -R g+w ' + home_path +'/www/craftcms'
     end
 
     Chef::Log.info("--- create virtual site template")

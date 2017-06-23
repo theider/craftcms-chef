@@ -161,33 +161,3 @@ if op_command['type'] == 'deploy'
 end     
 
 Chef::Log.info("-- DEPLOY COMPLETE")
-
-# app = search("aws_opsworks_app").first
-
-#Chef::Log.info("App: '#{app['shortname']}''")
-# Chef::Log.info("App URL: '#{app['app_source']['url']}'")
-# Chef::Log.info("App node: '#{app.inspect}'")
-
-# user 'create_user' do
-#     comment 'realise'
-#     username app_domain_name
-#     group app_domain_name
-#     manage_home true
-#     home '/home/' + app_domain_name
-#     shell '/bin/bash'
-# end
-
-
-# link '/var/www/html' do
-#   to '/srv/app/craftcms/public'
-# end
-
-
-
-
-
-# execute "update owner permission" do
-#     action :run
-#     command "chown -R www-data /srv/app"
-# end
-

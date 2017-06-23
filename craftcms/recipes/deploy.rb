@@ -31,7 +31,7 @@ def deploy_website(app)
     application home_path + '/www' do
         # check out code
         owner 'ubuntu'
-        group 'ubuntu'
+        group 'www-data'
         git home_path + '/www' do
             repository site_source_url
             reference 'master'
@@ -40,17 +40,14 @@ def deploy_website(app)
         end   
     end
 
-    application home_path + '/www' do
-        # check out code
-        owner 'ubuntu'
-        group 'ubuntu'
-        directory home_path + '/www' do
-          owner site_user
-          group 'www-data'
-          mode '0775'
-          recursive true
-          action :create
-        end               
+    execute "update group permission" do
+        action :run
+        command 'chgrp -R www-data ' + home_path +'/craftcms'
+    end
+
+    execute "update group write" do
+        action :run
+        command 'chmod -R g+w ' + home_path +'/craftcms'
     end
 
     Chef::Log.info("--- create virtual site template")
@@ -166,13 +163,6 @@ Chef::Log.info("-- DEPLOY COMPLETE")
 #   to '/srv/app/craftcms/public'
 # end
 
-# directory '/srv/app' do
-#   owner 'www-data'
-#   group 'www-data'
-#   mode '0755'
-#   recursive true
-# end
-
 
 
 
@@ -182,7 +172,3 @@ Chef::Log.info("-- DEPLOY COMPLETE")
 #     command "chown -R www-data /srv/app"
 # end
 
-# execute "update group permission" do
-#     action :run
-#     command "chgrp -R www-data /srv/app"
-# end

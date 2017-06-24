@@ -13,6 +13,15 @@ end
 
 package ['php7.0', 'php-mbstring', 'php-mysql', 'php-curl', 'php-xml', 'php-simplexml', 'imagemagick php-imagick', 'php-mcrypt', 'libapache2-mod-php']
 
+template "/etc/apache2/apache2.conf" do
+  source "apache2.conf.erb"
+  mode 0660
+end
+
+apache_module "rewrite" do
+  enable true
+end
+
 apache_module "mpm_event" do 
   enable false
 end
@@ -26,15 +35,6 @@ apache_module "socache_shmcb" do
 end
 
 apache_module "ssl" do 
-  enable true
-end
-
-template "/etc/apache2/apache2.conf" do
-  source "apache2.conf.erb"
-  mode 0660
-end
-
-apache_module "rewrite" do
   enable true
 end
 

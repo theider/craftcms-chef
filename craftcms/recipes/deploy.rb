@@ -110,6 +110,26 @@ def deploy_website(app)
       )
     end    
 
+    apache_module "rewrite" do
+      enable true
+    end
+
+    apache_module "mpm_event" do 
+      enable false
+    end
+
+    apache_module "mpm_prefork" do 
+      enable true
+    end
+
+    apache_module "socache_shmcb" do 
+      enable true
+    end
+
+    apache_module "ssl" do 
+      enable true
+    end
+
     service "apache2" do
       action :restart
     end

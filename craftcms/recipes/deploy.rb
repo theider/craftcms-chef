@@ -72,16 +72,16 @@ def deploy_website(app)
       end      
       file home_path +'/www/craftcms/ssl/certificate.crt' do
         content ssl_cert
-        mode '0400'
+        mode '0440'
         owner 'ubuntu'
-        group 'ubuntu'
+        group 'www-data'
       end
 
       file home_path +'/www/craftcms/ssl/certificate.key' do
         content ssl_key
-        mode '0400'
+        mode '0440'
         owner 'ubuntu'
-        group 'ubuntu'
+        group 'www-data'
       end      
       
       template "/etc/apache2/sites-available/" + site_domain + '.conf' do

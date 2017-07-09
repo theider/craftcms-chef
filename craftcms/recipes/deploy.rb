@@ -52,10 +52,17 @@ def deploy_website(app)
 
     Chef::Log.info("--- create virtual site template")
 
-    use_ssl = app['environment']['USE_SSL']
+    use_ssl = app['enable_ssl']
+    # contains certificate and 
+    ssl_config = app['ssl_configuration']
+    ssl_cert = ssl_config['certificate']
+    ssl_key = ssl_config['private_key']
 
-    if (use_ssl != nil) && (use_ssl == 'true')
+    if (use_ssl != nil) && use_ssl
       Chef::Log.info("--- deploying with SSL")
+      Chef::Log.info("certificate " + ssl_cert)
+      Chef::Log.info("private key " + ssl_key)
+      
       template "/etc/apache2/sites-available/" + site_domain + '.conf' do
         source "virtual-host-ssl.conf.erb"
         mode '0755'

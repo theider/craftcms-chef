@@ -64,6 +64,12 @@ def deploy_website(app)
       Chef::Log.info("private key " + ssl_key)
 
       # create the certificate and key files
+      directory home_path + '/www/craftcms/ssl' do
+        owner site_user
+        group 'www-data'
+        mode '0775'
+        recursive true
+      end      
       file home_path +'/www/craftcms/ssl/certificate.crt' do
         content ssl_cert
         mode '0400'

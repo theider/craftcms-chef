@@ -62,6 +62,21 @@ def deploy_website(app)
       Chef::Log.info("--- deploying with SSL")
       Chef::Log.info("certificate " + ssl_cert)
       Chef::Log.info("private key " + ssl_key)
+
+      # create the certificate and key files
+      file home_path +'/www/craftcms/ssl/certificate.crt' do
+        content ssl_cert
+        mode '0400'
+        owner 'ubuntu'
+        group 'ubuntu'
+      end
+
+      file home_path +'/www/craftcms/ssl/certificate.key' do
+        content ssl_key
+        mode '0400'
+        owner 'ubuntu'
+        group 'ubuntu'
+      end      
       
       template "/etc/apache2/sites-available/" + site_domain + '.conf' do
         source "virtual-host-ssl.conf.erb"
